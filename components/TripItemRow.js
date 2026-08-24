@@ -1,27 +1,16 @@
 "use client";
 
-import { useState } from "react";
-
-export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
-  const [priceDraft, setPriceDraft] = useState(item.price === "" ? "" : String(item.price));
-  const [editingPrice, setEditingPrice] = useState(false);
-
-  const commitPrice = () => {
-    setEditingPrice(false);
-    const val = priceDraft === "" ? "" : Math.max(0, Number(priceDraft) || 0);
-    onUpdate({ price: val });
-  };
-
-  const bumpQty = (delta) => {
-    onUpdate({ qty: Math.max(1, (Number(item.qty) || 1) + delta) });
-  };
+export default function TripItemRow({ item, onToggle, onOpen }) {
+  const qty = Number(item.qty) || 1;
+  const hasPrice = item.price !== "" && item.price != null;
+  const subtotal = hasPrice ? Number(item.price) * qty : null;
 
   return (
-    <li className="flex items-center gap-2.5 px-4 py-3">
+    <li className="flex items-center gap-2">
       <button
         aria-label={item.checked ? `Uncheck ${item.name}` : `Check off ${item.name}`}
         onClick={onToggle}
-        className={`stamp flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition active:scale-90 ${
+        className={`stamp ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition active:scale-90 ${
           item.checked ? "border-pine bg-pine" : "border-mist bg-surface"
         }`}
       >
@@ -32,63 +21,35 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
         )}
       </button>
 
-      <div className="flex min-w-0 flex-1 items-baseline">
-        <span className={item.checked ? "strike-wrap" : ""}>
-          <span className={`text-[15px] ${item.checked ? "text-inkSoft/70" : "text-ink"}`}>{item.name}</span>
-        </span>
-        <span className="leader" />
-      </div>
-
-      <div className="flex shrink-0 items-center gap-0.5 rounded-full border border-mist bg-paperDim py-0.5 pl-1 pr-1">
-        <button
-          onClick={() => bumpQty(-1)}
-          aria-label="Decrease quantity"
-          className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-inkSoft transition hover:bg-mist/50 active:scale-90"
-        >
-          −
-        </button>
-        <span className="min-w-[1.4rem] text-center font-mono text-sm font-bold text-ink" aria-label={`Quantity ${item.qty}`}>
-          {item.qty}
-        </span>
-        <button
-          onClick={() => bumpQty(1)}
-          aria-label="Increase quantity"
-          className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-inkSoft transition hover:bg-mist/50 active:scale-90"
-        >
-          +
-        </button>
-      </div>
-
-      {editingPrice ? (
-        <input
-          autoFocus
-          inputMode="decimal"
-          value={priceDraft}
-          onChange={(e) => setPriceDraft(e.target.value)}
-          onBlur={commitPrice}
-          onKeyDown={(e) => e.key === "Enter" && commitPrice()}
-          placeholder="0.00"
-          className="w-20 shrink-0 rounded-md border-2 border-pine bg-surface px-1.5 py-1 text-right font-mono text-base font-bold text-ink focus:outline-none"
-        />
-      ) : (
-        <button
-          onClick={() => setEditingPrice(true)}
-          className={`w-20 shrink-0 rounded-md px-1.5 py-1 text-right font-mono text-base font-bold transition hover:bg-mist/40 ${
-            item.price === "" ? "bg-paperDim text-inkSoft/60" : "bg-pine/10 text-pineDark"
-          }`}
-        >
-          {item.price === "" ? "add ₵" : `₵${Number(item.price).toFixed(2)}`}
-        </button>
-      )}
-
       <button
-        onClick={onRemove}
-        aria-label={`Remove ${item.name}`}
-        className="shrink-0 rounded-full p-1 text-inkSoft/60 transition hover:text-clay active:scale-90"
+        onClick={onOpen}
+        className="flex min-w-0 flex-1 items-center justify-between gap-3 py-3.5 pr-3 text-left"
       >
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        <span className="flex min-w-0 items-center gap-1.5">
+          <span className={item.checked ? "strike-wrap min-w-0" : "min-w-0"}>
+            <span className={`truncate text-[15px] ${item.checked ? "text-inkSoft/70" : "text-ink"}`}>
+              {item.name}
+            </span>
+          </span>
+          {qty > 1 && (
+            <span className="shrink-0 rounded-full bg-yolk/20 px-1.5 py-0.5 font-mono text-[11px] font-bold text-yolkDark">
+              ×{qty}
+            </span>
+          )}
+        </span>
+
+        <span className="flex shrink-0 items-center gap-2">
+          <span
+            className={`rounded-md px-2 py-1 font-mono text-sm font-bold ${
+              hasPrice ? "bg-pine/10 text-pineDark" : "bg-paperDim text-inkSoft/50"
+            }`}
+          >
+            {hasPrice ? `₵${subtotal.toFixed(2)}` : "add ₵"}
+          </span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-inkSoft/40">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
       </button>
     </li>
   );

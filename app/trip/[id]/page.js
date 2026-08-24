@@ -5,6 +5,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import TripItemRow from "@/components/TripItemRow";
 import TripAddItem from "@/components/TripAddItem";
+import ItemSheet from "@/components/ItemSheet";
 import Tally from "@/components/Tally";
 import { useShop } from "@/lib/store";
 import { tripTotals, formatDate } from "@/lib/money";
@@ -26,6 +27,7 @@ export default function TripPage({ params }) {
   const trip = data.trips.find((t) => t.id === params.id);
   const [renaming, setRenaming] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
+  const [editingItem, setEditingItem] = useState(null);
 
   if (!trip) {
     return (
@@ -61,6 +63,18 @@ export default function TripPage({ params }) {
   const handleDownload = async () => {
     const { downloadTripPdf } = await import("@/lib/pdf");
     downloadTripPdf(trip);
+  };
+
+  const closeSheet = () => setEditingItem(null);
+
+  const handleSheetSave = (payload) => {
+    updateTripItem(trip.id, editingItem.id, payload);
+    closeSheet();
+  };
+
+  const handleSheetDelete = () => {
+    removeTripItem(trip.id, editingItem.id);
+    closeSheet();
   };
 
   return (
@@ -135,7 +149,7 @@ export default function TripPage({ params }) {
         <div className="torn-top torn-bottom rounded-card border border-mist bg-surface/70 shadow-paper">
           {trip.items.length === 0 ? (
             <p className="px-4 py-8 text-center text-sm text-inkSoft">
-              Nothing on this sheet yet. Add items below — we'll remember them for next time.
+              Nothing on this sheet yet. Add your first item below.
             </p>
           ) : (
             <ul className="divide-y divide-mist/70">
@@ -144,8 +158,7 @@ export default function TripPage({ params }) {
                   key={item.id}
                   item={item}
                   onToggle={() => toggleTripItem(trip.id, item.id)}
-                  onUpdate={(patch) => updateTripItem(trip.id, item.id, patch)}
-                  onRemove={() => removeTripItem(trip.id, item.id)}
+                  onOpen={() => setEditingItem(item)}
                 />
               ))}
             </ul>
@@ -173,6 +186,15 @@ export default function TripPage({ params }) {
       </main>
 
       <Tally inCart={inCart} planned={planned} />
+
+      <ItemSheet
+        open={Boolean(editingItem)}
+        item={editingItem}
+        itemBank={data.itemBank}
+        onClose={closeSheet}
+        onSave={handleSheetSave}
+        onDelete={handleSheetDelete}
+      />
     </>
   );
 }
