@@ -29,7 +29,7 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
   const share = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Our List", text: "Join our shared shopping list", url });
+        await navigator.share({ title: "Pokah Groceries", text: "Join our shared shopping list", url });
       } catch (err) {
         /* user cancelled */
       }

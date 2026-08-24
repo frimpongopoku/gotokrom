@@ -31,7 +31,7 @@ const mono = Space_Mono({
 });
 
 const SITE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
-const TITLE = "Our List";
+const TITLE = "Pokah Groceries";
 const DESCRIPTION = "A shared shopping list for two — note what's needed around the house, then check it off at the store together.";
 
 export const metadata = {

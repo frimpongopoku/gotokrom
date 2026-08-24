@@ -4,11 +4,11 @@ import ThemeToggle from "./ThemeToggle";
 
 export function Wordmark() {
   return (
-    <div className="flex items-center gap-2">
-      <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-pine text-paper shadow-paper">
+    <div className="flex min-w-0 items-center gap-2">
+      <span className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-pine text-paper shadow-paper">
         <span className="h-2 w-2 rounded-full bg-yolk" />
       </span>
-      <span className="font-display text-xl font-bold tracking-tight text-ink">Our List</span>
+      <span className="truncate font-display text-lg font-bold tracking-tight text-ink">Pokah Groceries</span>
     </div>
   );
 }

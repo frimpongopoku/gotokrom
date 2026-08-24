@@ -1,10 +1,10 @@
 {
-  "name": "Our List",
-  "short_name": "Our List",
+  "name": "Pokah Groceries",
+  "short_name": "Pokah",
   "description": "A shared shopping list for two.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAF6EC",
+  "background_color": "#171B15",
   "theme_color": "#2F6E52",
   "icons": [
     {

@@ -58,6 +58,11 @@ export default function TripPage({ params }) {
     }
   };
 
+  const handleDownload = async () => {
+    const { downloadTripPdf } = await import("@/lib/pdf");
+    downloadTripPdf(trip);
+  };
+
   return (
     <>
       <Header
@@ -66,6 +71,21 @@ export default function TripPage({ params }) {
         subtitle={`${formatDate(trip.createdAt)}${done ? " · done" : ""}`}
         right={
           <div className="flex items-center gap-1">
+            <button
+              onClick={handleDownload}
+              aria-label="Download PDF"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink transition hover:bg-mist/60 active:scale-90"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
             <button
               onClick={openRename}
               aria-label="Rename trip"
