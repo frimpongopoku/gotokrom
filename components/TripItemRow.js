@@ -22,7 +22,7 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
         aria-label={item.checked ? `Uncheck ${item.name}` : `Check off ${item.name}`}
         onClick={onToggle}
         className={`stamp flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition active:scale-90 ${
-          item.checked ? "border-pine bg-pine" : "border-mist bg-white"
+          item.checked ? "border-pine bg-pine" : "border-mist bg-surface"
         }`}
       >
         {item.checked && (
@@ -60,7 +60,7 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
           onBlur={commitPrice}
           onKeyDown={(e) => e.key === "Enter" && commitPrice()}
           placeholder="0.00"
-          className="w-16 shrink-0 rounded-md border border-pine bg-white px-1.5 py-1 text-right font-mono text-sm text-ink focus:outline-none"
+          className="w-16 shrink-0 rounded-md border border-pine bg-surface px-1.5 py-1 text-right font-mono text-sm text-ink focus:outline-none"
         />
       ) : (
         <button

@@ -27,7 +27,7 @@ export default function HouseholdList() {
         )}
       </div>
 
-      <div className="rounded-card border border-mist bg-white/60 shadow-paper">
+      <div className="rounded-card border border-mist bg-surface/60 shadow-paper">
         {needed.length === 0 ? (
           <p className="px-4 py-6 text-center text-sm text-inkSoft">
             Nothing noted yet. Add whatever you spot running low.

@@ -1,5 +1,7 @@
 "use client";
 
+import ThemeToggle from "./ThemeToggle";
+
 export function Wordmark() {
   return (
     <div className="flex items-center gap-2">
@@ -36,7 +38,10 @@ export default function Header({ back, title, subtitle, right }) {
             <Wordmark />
           )}
         </div>
-        {right}
+        <div className="flex shrink-0 items-center gap-1">
+          <ThemeToggle />
+          {right}
+        </div>
       </div>
     </header>
   );

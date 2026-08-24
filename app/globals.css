@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Night mode is the default palette; .light overrides it. */
 :root {
-  --paper: #faf6ec;
+  --color-paper: 23 27 21;
+  --color-paper-dim: 30 35 27;
+  --color-surface: 34 40 31;
+  --color-ink: 240 236 224;
+  --color-ink-soft: 163 170 151;
+  --color-mist: 51 59 47;
+  --color-pine-dark: 143 212 174;
+  --color-yolk-dark: 245 203 116;
+}
+
+:root.light {
+  --color-paper: 250 246 236;
+  --color-paper-dim: 241 235 219;
+  --color-surface: 255 255 255;
+  --color-ink: 31 42 36;
+  --color-ink-soft: 75 86 78;
+  --color-mist: 216 210 194;
+  --color-pine-dark: 32 76 58;
+  --color-yolk-dark: 201 138 30;
 }
 
 * {
@@ -37,8 +56,8 @@ body {
   left: 0;
   right: 0;
   height: 11px;
-  background-image: linear-gradient(-45deg, var(--paper) 7px, transparent 0),
-    linear-gradient(45deg, var(--paper) 7px, transparent 0);
+  background-image: linear-gradient(-45deg, rgb(var(--color-paper)) 7px, transparent 0),
+    linear-gradient(45deg, rgb(var(--color-paper)) 7px, transparent 0);
   background-size: 14px 14px;
   background-repeat: repeat-x;
 }

@@ -101,7 +101,7 @@ export default function TripPage({ params }) {
               value={nameDraft}
               onChange={(e) => setNameDraft(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && commitRename()}
-              className="flex-1 rounded-card border border-pine bg-white px-3 py-2 text-[15px] text-ink focus:outline-none"
+              className="flex-1 rounded-card border border-pine bg-surface px-3 py-2 text-[15px] text-ink focus:outline-none"
             />
             <button
               onClick={commitRename}
@@ -112,7 +112,7 @@ export default function TripPage({ params }) {
           </div>
         )}
 
-        <div className="torn-top torn-bottom rounded-card border border-mist bg-white/70 shadow-paper">
+        <div className="torn-top torn-bottom rounded-card border border-mist bg-surface/70 shadow-paper">
           {trip.items.length === 0 ? (
             <p className="px-4 py-8 text-center text-sm text-inkSoft">
               Nothing on this sheet yet. Add items below — we'll remember them for next time.

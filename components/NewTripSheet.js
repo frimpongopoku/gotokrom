@@ -39,7 +39,7 @@ export default function NewTripSheet({ open, onClose }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder={defaultTripName()}
-          className="mt-4 w-full rounded-card border border-mist bg-white/70 px-3.5 py-3 text-[15px] text-ink placeholder:text-inkSoft/60 focus:border-pine focus:outline-none"
+          className="mt-4 w-full rounded-card border border-mist bg-surface/70 px-3.5 py-3 text-[15px] text-ink placeholder:text-inkSoft/60 focus:border-pine focus:outline-none"
         />
 
         <div className="mt-3 flex flex-col gap-2">

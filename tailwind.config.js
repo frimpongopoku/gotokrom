@@ -1,19 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./app/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        paper: "#FAF6EC",
-        paperDim: "#F1EBDB",
-        ink: "#1F2A24",
-        inkSoft: "#4B564E",
+        paper: "rgb(var(--color-paper) / <alpha-value>)",
+        paperDim: "rgb(var(--color-paper-dim) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        inkSoft: "rgb(var(--color-ink-soft) / <alpha-value>)",
+        mist: "rgb(var(--color-mist) / <alpha-value>)",
         pine: "#2F6E52",
-        pineDark: "#204C3A",
+        pineDark: "rgb(var(--color-pine-dark) / <alpha-value>)",
         yolk: "#E8A93B",
-        yolkDark: "#C98A1E",
+        yolkDark: "rgb(var(--color-yolk-dark) / <alpha-value>)",
         clay: "#C4573B",
-        mist: "#D8D2C2",
       },
       fontFamily: {
         display: ["var(--font-display)"],
