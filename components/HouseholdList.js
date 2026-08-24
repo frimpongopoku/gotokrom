@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useShop } from "@/lib/store";
+import { formatRelative } from "@/lib/money";
 import ItemCombobox from "./ItemCombobox";
 
 export default function HouseholdList() {
@@ -43,7 +44,12 @@ export default function HouseholdList() {
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-yolk" />
                 </button>
-                <span className="flex-1 text-[15px] text-ink">{item.name}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] text-ink">{item.name}</span>
+                  {item.neededSince && (
+                    <span className="block text-[11px] text-inkSoft/80">Added {formatRelative(item.neededSince)}</span>
+                  )}
+                </span>
                 {item.lastPrice != null && item.lastPrice !== "" && (
                   <span className="font-mono text-xs text-inkSoft">₵{Number(item.lastPrice).toFixed(2)}</span>
                 )}
