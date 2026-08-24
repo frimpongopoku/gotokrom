@@ -42,6 +42,21 @@ export default function Home() {
           </div>
         )}
 
+        {justCreated && (
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-lg bg-pine/10 px-3 py-2 text-xs font-medium text-pineDark">
+            <span>New shared list ready — tap the share icon above to invite your wife.</span>
+            <button
+              onClick={dismissJustCreated}
+              aria-label="Dismiss"
+              className="shrink-0 text-inkSoft transition hover:text-ink"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+        )}
+
         <HouseholdList />
 
         <button
@@ -96,7 +111,7 @@ export default function Home() {
 
       <NewTripSheet open={tripSheetOpen} onClose={() => setTripSheetOpen(false)} />
       <ShareSheet
-        open={shareOpen || justCreated}
+        open={shareOpen}
         autoMessage={justCreated}
         onClose={() => {
           setShareOpen(false);
