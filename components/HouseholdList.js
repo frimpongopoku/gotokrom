@@ -45,7 +45,7 @@ export default function HouseholdList() {
                 </button>
                 <span className="flex-1 text-[15px] text-ink">{item.name}</span>
                 {item.lastPrice != null && item.lastPrice !== "" && (
-                  <span className="font-mono text-xs text-inkSoft">${Number(item.lastPrice).toFixed(2)}</span>
+                  <span className="font-mono text-xs text-inkSoft">₵{Number(item.lastPrice).toFixed(2)}</span>
                 )}
               </li>
             ))}
@@ -61,6 +61,7 @@ export default function HouseholdList() {
               addNeededItem(item.name);
               setText("");
             }}
+            onSubmit={submit}
             placeholder="Add something you noticed…"
             inputClassName="w-full rounded-lg border border-transparent bg-transparent px-2 py-2 text-[15px] text-ink placeholder:text-inkSoft/70 focus:border-mist focus:bg-paperDim focus:outline-none"
           />

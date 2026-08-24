@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-export default function ItemCombobox({ items, value, onChangeText, onPick, placeholder, inputClassName }) {
+export default function ItemCombobox({ items, value, onChangeText, onPick, onSubmit, placeholder, inputClassName }) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
 
@@ -22,6 +22,13 @@ export default function ItemCombobox({ items, value, onChangeText, onPick, place
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            setOpen(false);
+            onSubmit?.();
+          }
+        }}
         placeholder={placeholder}
         className={inputClassName}
       />
@@ -40,7 +47,7 @@ export default function ItemCombobox({ items, value, onChangeText, onPick, place
               >
                 <span>{s.name}</span>
                 {s.lastPrice != null && s.lastPrice !== "" && (
-                  <span className="font-mono text-xs text-inkSoft">${Number(s.lastPrice).toFixed(2)}</span>
+                  <span className="font-mono text-xs text-inkSoft">₵{Number(s.lastPrice).toFixed(2)}</span>
                 )}
               </button>
             </li>

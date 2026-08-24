@@ -10,7 +10,7 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
     if (typeof window === "undefined") return;
     const blobId = localStorage.getItem("our-list:blobId");
     if (blobId) {
-      setUrl(`${window.location.origin}${window.location.pathname === "/" ? "" : ""}/?list=${blobId}`);
+      setUrl(`${window.location.origin}/?list=${blobId}`);
     }
   }, [open]);
 

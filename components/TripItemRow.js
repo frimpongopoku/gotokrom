@@ -69,7 +69,7 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
             item.price === "" ? "text-inkSoft/50" : "text-ink"
           }`}
         >
-          {item.price === "" ? "add $" : `$${Number(item.price).toFixed(2)}`}
+          {item.price === "" ? "add ₵" : `₵${Number(item.price).toFixed(2)}`}
         </button>
       )}
 

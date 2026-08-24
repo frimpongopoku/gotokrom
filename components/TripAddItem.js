@@ -24,6 +24,7 @@ export default function TripAddItem({ itemBank, onAdd }) {
           setName(item.name);
           if (item.lastPrice != null) setPrice(String(item.lastPrice));
         }}
+        onSubmit={submit}
         placeholder="Add an item…"
         inputClassName="w-full rounded-lg border border-transparent bg-transparent px-2 py-2 text-[15px] text-ink placeholder:text-inkSoft/70 focus:border-mist focus:bg-paperDim focus:outline-none"
       />
@@ -32,7 +33,7 @@ export default function TripAddItem({ itemBank, onAdd }) {
         onChange={(e) => setPrice(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && submit()}
         inputMode="decimal"
-        placeholder="$"
+        placeholder="₵"
         className="w-16 shrink-0 rounded-lg border border-mist bg-white/70 px-2 py-2 text-right font-mono text-sm text-ink placeholder:text-inkSoft/50 focus:border-pine focus:outline-none"
       />
       <button
