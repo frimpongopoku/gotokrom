@@ -154,14 +154,22 @@ export default function TripPage({ params }) {
           {!done && <TripAddItem itemBank={data.itemBank} onAdd={(payload) => addTripItem(trip.id, payload)} />}
         </div>
 
-        <button
-          onClick={() => (done ? reopenTrip(trip.id) : finishTrip(trip.id))}
-          className={`mt-5 w-full rounded-card py-3.5 text-sm font-bold transition active:scale-[0.98] ${
-            done ? "border border-mist text-ink" : "bg-ink text-paper"
-          }`}
-        >
-          {done ? "Reopen trip" : "Finish trip"}
-        </button>
+        <div className="mt-10 border-t border-dashed border-mist pt-5">
+          {!done && <p className="mb-2 text-center text-xs text-inkSoft">All done shopping?</p>}
+          <button
+            onClick={() => (done ? reopenTrip(trip.id) : finishTrip(trip.id))}
+            className={`flex w-full items-center justify-center gap-2 rounded-card py-3.5 text-sm font-bold transition active:scale-[0.98] ${
+              done ? "border border-mist text-ink" : "bg-ink text-paper"
+            }`}
+          >
+            {!done && (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+            {done ? "Reopen trip" : "Finish trip"}
+          </button>
+        </div>
       </main>
 
       <Tally inCart={inCart} planned={planned} />

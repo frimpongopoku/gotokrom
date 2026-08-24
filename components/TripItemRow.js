@@ -36,17 +36,25 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
         <span className={item.checked ? "strike-wrap" : ""}>
           <span className={`text-[15px] ${item.checked ? "text-inkSoft/70" : "text-ink"}`}>{item.name}</span>
         </span>
-        {Number(item.qty) > 1 && (
-          <span className="ml-1.5 shrink-0 font-mono text-xs text-inkSoft">×{item.qty}</span>
-        )}
         <span className="leader" />
       </div>
 
-      <div className="flex shrink-0 items-center gap-1 text-inkSoft">
-        <button onClick={() => bumpQty(-1)} aria-label="Decrease quantity" className="px-1 text-sm active:scale-90">
+      <div className="flex shrink-0 items-center gap-0.5 rounded-full border border-mist bg-paperDim py-0.5 pl-1 pr-1">
+        <button
+          onClick={() => bumpQty(-1)}
+          aria-label="Decrease quantity"
+          className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-inkSoft transition hover:bg-mist/50 active:scale-90"
+        >
           −
         </button>
-        <button onClick={() => bumpQty(1)} aria-label="Increase quantity" className="px-1 text-sm active:scale-90">
+        <span className="min-w-[1.4rem] text-center font-mono text-sm font-bold text-ink" aria-label={`Quantity ${item.qty}`}>
+          {item.qty}
+        </span>
+        <button
+          onClick={() => bumpQty(1)}
+          aria-label="Increase quantity"
+          className="flex h-6 w-6 items-center justify-center rounded-full text-sm text-inkSoft transition hover:bg-mist/50 active:scale-90"
+        >
           +
         </button>
       </div>
@@ -60,13 +68,13 @@ export default function TripItemRow({ item, onToggle, onUpdate, onRemove }) {
           onBlur={commitPrice}
           onKeyDown={(e) => e.key === "Enter" && commitPrice()}
           placeholder="0.00"
-          className="w-16 shrink-0 rounded-md border border-pine bg-surface px-1.5 py-1 text-right font-mono text-sm text-ink focus:outline-none"
+          className="w-20 shrink-0 rounded-md border-2 border-pine bg-surface px-1.5 py-1 text-right font-mono text-base font-bold text-ink focus:outline-none"
         />
       ) : (
         <button
           onClick={() => setEditingPrice(true)}
-          className={`w-16 shrink-0 rounded-md px-1.5 py-1 text-right font-mono text-sm transition hover:bg-paperDim ${
-            item.price === "" ? "text-inkSoft/50" : "text-ink"
+          className={`w-20 shrink-0 rounded-md px-1.5 py-1 text-right font-mono text-base font-bold transition hover:bg-mist/40 ${
+            item.price === "" ? "bg-paperDim text-inkSoft/60" : "bg-pine/10 text-pineDark"
           }`}
         >
           {item.price === "" ? "add ₵" : `₵${Number(item.price).toFixed(2)}`}
