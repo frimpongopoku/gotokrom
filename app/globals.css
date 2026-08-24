@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #faf6ec;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+::selection {
+  background: #e8a93b55;
+}
+
+:focus-visible {
+  outline: 2px solid #2f6e52;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Torn paper edges (signature card motif) ---------- */
+.torn-top,
+.torn-bottom {
+  position: relative;
+}
+
+.torn-top::before,
+.torn-bottom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 11px;
+  background-image: linear-gradient(-45deg, var(--paper) 7px, transparent 0),
+    linear-gradient(45deg, var(--paper) 7px, transparent 0);
+  background-size: 14px 14px;
+  background-repeat: repeat-x;
+}
+
+.torn-top::before {
+  top: -1px;
+  background-position: left top;
+}
+
+.torn-bottom::after {
+  bottom: -1px;
+  background-position: left bottom;
+  transform: scaleY(-1);
+}
+
+/* ---------- Hand-drawn strikethrough for checked items ---------- */
+.strike-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.strike-wrap::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 52%;
+  height: 9px;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9' viewBox='0 0 16 9'%3E%3Cpath d='M0 5.5C2 2 4 1 6 4.5S10 8 12 4.5 15 1 16 3' stroke='%23C4573B' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 16px 9px;
+  clip-path: inset(0 100% 0 0);
+  animation: strike-in 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes strike-in {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Tally footer digit flash ---------- */
+.tally-flash {
+  animation: tally-flash 480ms ease-out;
+  border-radius: 4px;
+}
+
+@keyframes tally-flash {
+  0% {
+    background-color: rgba(232, 169, 59, 0.45);
+  }
+  100% {
+    background-color: rgba(232, 169, 59, 0);
+  }
+}
+
+/* ---------- Dotted receipt leader ---------- */
+.leader {
+  flex: 1 1 auto;
+  border-bottom: 2px dotted #c7bfa9;
+  margin: 0 8px;
+  height: 1px;
+  transform: translateY(-4px);
+  min-width: 12px;
+}
+
+/* ---------- Checkbox "stamp" ---------- */
+.stamp {
+  transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stamp:active {
+  transform: scale(0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Our List",
+  "short_name": "Our List",
+  "description": "A shared shopping list for two.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF6EC",
+  "theme_color": "#2F6E52",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
