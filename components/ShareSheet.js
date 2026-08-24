@@ -39,7 +39,7 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 backdrop-blur-sm sm:items-center" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-scrim/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
       <div
         className="torn-top w-full max-w-md rounded-t-2xl bg-paper px-5 pb-7 pt-6 shadow-lift sm:rounded-card"
         onClick={(e) => e.stopPropagation()}

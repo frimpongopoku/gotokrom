@@ -10,8 +10,10 @@
   --color-ink: 240 236 224;
   --color-ink-soft: 163 170 151;
   --color-mist: 51 59 47;
+  --color-pine: 30 70 54;
   --color-pine-dark: 143 212 174;
   --color-yolk-dark: 245 203 116;
+  --color-scrim: 0 0 0;
 }
 
 :root.light {
@@ -21,8 +23,10 @@
   --color-ink: 31 42 36;
   --color-ink-soft: 75 86 78;
   --color-mist: 216 210 194;
+  --color-pine: 47 110 82;
   --color-pine-dark: 32 76 58;
   --color-yolk-dark: 201 138 30;
+  --color-scrim: 31 42 36;
 }
 
 * {

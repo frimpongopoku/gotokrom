@@ -11,11 +11,12 @@ module.exports = {
         ink: "rgb(var(--color-ink) / <alpha-value>)",
         inkSoft: "rgb(var(--color-ink-soft) / <alpha-value>)",
         mist: "rgb(var(--color-mist) / <alpha-value>)",
-        pine: "#2F6E52",
+        pine: "rgb(var(--color-pine) / <alpha-value>)",
         pineDark: "rgb(var(--color-pine-dark) / <alpha-value>)",
         yolk: "#E8A93B",
         yolkDark: "rgb(var(--color-yolk-dark) / <alpha-value>)",
         clay: "#C4573B",
+        scrim: "rgb(var(--color-scrim) / <alpha-value>)",
       },
       fontFamily: {
         display: ["var(--font-display)"],
