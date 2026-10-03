@@ -1,14 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "@/components/Header";
 import TripItemRow from "@/components/TripItemRow";
 import TripAddItem from "@/components/TripAddItem";
 import ItemSheet from "@/components/ItemSheet";
 import Tally from "@/components/Tally";
+import FinishTripSheet from "@/components/FinishTripSheet";
+import BasketSection from "@/components/BasketSection";
 import { useShop } from "@/lib/store";
-import { tripTotals, formatDate } from "@/lib/money";
+import { tripTotals, groupByCategory, formatDate } from "@/lib/money";
 
 export default function TripPage({ params }) {
   const router = useRouter();
@@ -22,12 +24,25 @@ export default function TripPage({ params }) {
     reopenTrip,
     deleteTrip,
     renameTrip,
+    createCategory,
   } = useShop();
 
   const trip = data.trips.find((t) => t.id === params.id);
+  const categories = data.categories || [];
   const [renaming, setRenaming] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [editingItem, setEditingItem] = useState(null);
+  const [addCategoryId, setAddCategoryId] = useState(null);
+  const [confirmingFinish, setConfirmingFinish] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => new Set());
+  const [justAddedId, setJustAddedId] = useState(null);
+  const addInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!justAddedId) return;
+    const t = setTimeout(() => setJustAddedId(null), 1800);
+    return () => clearTimeout(t);
+  }, [justAddedId]);
 
   if (!trip) {
     return (
@@ -41,7 +56,39 @@ export default function TripPage({ params }) {
   }
 
   const { planned, inCart } = tripTotals(trip);
+  const groups = groupByCategory(trip, categories);
+  const grouped = groups.some((g) => g.category);
   const done = Boolean(trip.completedAt);
+
+  const toggleCollapsed = (key) =>
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+
+  const addToCategory = (categoryId) => {
+    setAddCategoryId(categoryId);
+    addInputRef.current?.focus();
+  };
+
+  const handleAdd = (payload) => {
+    const id = addTripItem(trip.id, payload);
+    if (!id) return;
+    const key = payload.categoryId ?? "none";
+    if (collapsed.has(key)) toggleCollapsed(key);
+    setJustAddedId(id);
+  };
+
+  const renderItem = (item) => (
+    <TripItemRow
+      key={item.id}
+      item={item}
+      isNew={item.id === justAddedId}
+      onToggle={() => toggleTripItem(trip.id, item.id)}
+      onOpen={() => setEditingItem(item)}
+    />
+  );
 
   const openRename = () => {
     setNameDraft(trip.name);
@@ -62,7 +109,7 @@ export default function TripPage({ params }) {
 
   const handleDownload = async () => {
     const { downloadTripPdf } = await import("@/lib/pdf");
-    downloadTripPdf(trip);
+    downloadTripPdf(trip, categories);
   };
 
   const closeSheet = () => setEditingItem(null);
@@ -127,7 +174,7 @@ export default function TripPage({ params }) {
         }
       />
 
-      <main className="mx-auto max-w-xl px-4 pb-28 pt-5">
+      <main className={`mx-auto max-w-xl px-4 pt-5 ${done ? "pb-32" : "pb-56"}`}>
         {renaming && (
           <div className="mb-4 flex gap-2">
             <input
@@ -146,51 +193,95 @@ export default function TripPage({ params }) {
           </div>
         )}
 
-        <div className="torn-top torn-bottom rounded-card border border-mist bg-surface/70 shadow-paper">
+        <div className="torn-top torn-bottom rounded-card border border-mist bg-surface/70 py-1.5 shadow-paper">
           {trip.items.length === 0 ? (
-            <p className="px-4 py-8 text-center text-sm text-inkSoft">
-              Nothing on this sheet yet. Add your first item below.
-            </p>
+            <div className="px-6 py-10 text-center">
+              <p className="font-display text-lg font-bold text-ink">This basket is empty</p>
+              <p className="mt-1 text-sm text-inkSoft">
+                {done
+                  ? "Reopen the trip to add items."
+                  : "Add items below. Pick a category first to group them, like Produce or Toiletries."}
+              </p>
+            </div>
+          ) : grouped ? (
+            groups.map((group) => {
+              const key = group.category?.id ?? "none";
+              return (
+                <BasketSection
+                  key={key}
+                  group={group}
+                  collapsed={collapsed.has(key)}
+                  onToggleCollapsed={() => toggleCollapsed(key)}
+                  onAddHere={done ? null : () => addToCategory(group.category?.id ?? null)}
+                >
+                  {group.items.map(renderItem)}
+                </BasketSection>
+              );
+            })
           ) : (
-            <ul className="divide-y divide-mist/70">
-              {trip.items.map((item) => (
-                <TripItemRow
-                  key={item.id}
-                  item={item}
-                  onToggle={() => toggleTripItem(trip.id, item.id)}
-                  onOpen={() => setEditingItem(item)}
-                />
-              ))}
-            </ul>
+            <ul className="divide-y divide-mist/60">{trip.items.map(renderItem)}</ul>
           )}
-
-          {!done && <TripAddItem itemBank={data.itemBank} onAdd={(payload) => addTripItem(trip.id, payload)} />}
         </div>
 
-        <div className="mt-10 border-t border-dashed border-mist pt-5">
-          {!done && <p className="mb-2 text-center text-xs text-inkSoft">All done shopping?</p>}
+        {done ? (
           <button
-            onClick={() => (done ? reopenTrip(trip.id) : finishTrip(trip.id))}
-            className={`flex w-full items-center justify-center gap-2 rounded-card py-3.5 text-sm font-bold transition active:scale-[0.98] ${
-              done ? "border border-mist text-ink" : "bg-ink text-paper"
-            }`}
+            onClick={() => reopenTrip(trip.id)}
+            className="mt-8 w-full rounded-card border border-mist py-3.5 text-sm font-bold text-ink transition active:scale-[0.98]"
           >
-            {!done && (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            )}
-            {done ? "Reopen trip" : "Finish trip"}
+            Reopen trip
           </button>
-        </div>
+        ) : (
+          trip.items.length > 0 && (
+            <p className="mt-10 text-center text-[13px] text-inkSoft">
+              Done shopping?{" "}
+              <button
+                onClick={() => setConfirmingFinish(true)}
+                className="font-semibold text-ink underline decoration-mist decoration-2 underline-offset-4 transition hover:decoration-ink"
+              >
+                Finish this trip
+              </button>
+            </p>
+          )
+        )}
       </main>
 
-      <Tally inCart={inCart} planned={planned} />
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-mist bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+        <div className="mx-auto max-w-xl">
+          <Tally inCart={inCart} planned={planned} groups={groups} />
+          {done ? (
+            <div className="h-3" />
+          ) : (
+            <TripAddItem
+              itemBank={data.itemBank}
+              categories={categories}
+              categoryId={addCategoryId}
+              onCategoryChange={setAddCategoryId}
+              onCreateCategory={createCategory}
+              inputRef={addInputRef}
+              onAdd={handleAdd}
+            />
+          )}
+        </div>
+      </div>
+
+      <FinishTripSheet
+        open={confirmingFinish}
+        trip={trip}
+        inCart={inCart}
+        planned={planned}
+        onClose={() => setConfirmingFinish(false)}
+        onConfirm={() => {
+          finishTrip(trip.id);
+          setConfirmingFinish(false);
+        }}
+      />
 
       <ItemSheet
         open={Boolean(editingItem)}
         item={editingItem}
         itemBank={data.itemBank}
+        categories={categories}
+        onCreateCategory={createCategory}
         onClose={closeSheet}
         onSave={handleSheetSave}
         onDelete={handleSheetDelete}

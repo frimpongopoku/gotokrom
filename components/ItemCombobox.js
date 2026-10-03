@@ -2,7 +2,17 @@
 
 import { useMemo, useRef, useState } from "react";
 
-export default function ItemCombobox({ items, value, onChangeText, onPick, onSubmit, placeholder, inputClassName }) {
+export default function ItemCombobox({
+  items,
+  value,
+  onChangeText,
+  onPick,
+  onSubmit,
+  placeholder,
+  inputClassName,
+  inputRef,
+  dropUp = false,
+}) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
 
@@ -15,6 +25,7 @@ export default function ItemCombobox({ items, value, onChangeText, onPick, onSub
   return (
     <div className="relative flex-1" ref={wrapRef}>
       <input
+        ref={inputRef}
         value={value}
         onChange={(e) => {
           onChangeText(e.target.value);
@@ -33,7 +44,11 @@ export default function ItemCombobox({ items, value, onChangeText, onPick, onSub
         className={inputClassName}
       />
       {open && suggestions.length > 0 && (
-        <ul className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-card border border-mist bg-paper shadow-lift">
+        <ul
+          className={`absolute left-0 right-0 z-30 overflow-hidden rounded-card border border-mist bg-paper shadow-lift ${
+            dropUp ? "bottom-full mb-2" : "top-full mt-1"
+          }`}
+        >
           {suggestions.map((s) => (
             <li key={s.id}>
               <button

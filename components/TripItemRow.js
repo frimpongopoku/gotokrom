@@ -1,21 +1,30 @@
 "use client";
 
-export default function TripItemRow({ item, onToggle, onOpen }) {
+import { useEffect, useRef } from "react";
+
+export default function TripItemRow({ item, isNew = false, onToggle, onOpen }) {
+  const rowRef = useRef(null);
+
+  // Bring a just-added item into view above the docked composer.
+  useEffect(() => {
+    if (isNew) rowRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [isNew]);
+
   const qty = Number(item.qty) || 1;
   const hasPrice = item.price !== "" && item.price != null;
   const subtotal = hasPrice ? Number(item.price) * qty : null;
 
   return (
-    <li className="flex items-center gap-2">
+    <li ref={rowRef} className={`flex scroll-mb-60 items-center gap-2 transition-colors hover:bg-paperDim/60 ${isNew ? "row-new" : ""}`}>
       <button
         aria-label={item.checked ? `Uncheck ${item.name}` : `Check off ${item.name}`}
         onClick={onToggle}
         className={`stamp ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition active:scale-90 ${
-          item.checked ? "border-pine bg-pine" : "border-mist bg-surface"
+          item.checked ? "border-pine bg-pine" : "border-mist bg-surface hover:border-pine/70"
         }`}
       >
         {item.checked && (
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="check-draw">
             <path d="M5 13l4 4L19 7" stroke="#FAF6EC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
@@ -23,7 +32,7 @@ export default function TripItemRow({ item, onToggle, onOpen }) {
 
       <button
         onClick={onOpen}
-        className="flex min-w-0 flex-1 items-center justify-between gap-3 py-3.5 pr-3 text-left"
+        className="group flex min-w-0 flex-1 items-center justify-between gap-3 py-3.5 pr-3 text-left"
       >
         <span className="flex min-w-0 items-center gap-1.5">
           <span className={item.checked ? "strike-wrap min-w-0" : "min-w-0"}>
@@ -46,7 +55,13 @@ export default function TripItemRow({ item, onToggle, onOpen }) {
           >
             {hasPrice ? `₵${subtotal.toFixed(2)}` : "add ₵"}
           </span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-inkSoft/40">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="text-inkSoft/40 transition group-hover:translate-x-0.5 group-hover:text-inkSoft"
+          >
             <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>

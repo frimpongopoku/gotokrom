@@ -11,7 +11,7 @@ export default function TripCard({ trip }) {
   return (
     <Link
       href={`/trip/${trip.id}`}
-      className="torn-top torn-bottom block rounded-card border border-mist bg-surface/70 px-4 py-5 shadow-paper transition active:scale-[0.99]"
+      className="torn-top torn-bottom block rounded-card border border-mist bg-surface/70 px-4 py-5 shadow-paper transition hover:-translate-y-0.5 hover:shadow-lift active:scale-[0.99]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">

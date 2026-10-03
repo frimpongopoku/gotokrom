@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./app/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
   darkMode: "class",
+  // Hover styles only apply on devices that can actually hover, so taps on
+  // phones don't leave buttons stuck in their hover state.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       colors: {
