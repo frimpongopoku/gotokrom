@@ -46,7 +46,7 @@ export default function ItemSheet({ open, item, itemBank, categories, onCreateCa
         role="dialog"
         aria-modal="true"
         aria-label="Edit item"
-        className="sheet-in torn-top max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-paper px-5 pb-6 pt-3 shadow-lift sm:rounded-card sm:pt-6"
+        className="sheet-in torn-top max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-mist/70 bg-paper px-5 pb-6 pt-3 shadow-lift sm:rounded-3xl sm:pt-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-mist sm:hidden" />

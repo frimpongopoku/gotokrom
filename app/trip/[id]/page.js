@@ -25,6 +25,7 @@ export default function TripPage({ params }) {
     deleteTrip,
     renameTrip,
     createCategory,
+    createClaimFromTrip,
   } = useShop();
 
   const trip = data.trips.find((t) => t.id === params.id);
@@ -107,6 +108,19 @@ export default function TripPage({ params }) {
     }
   };
 
+  // A trip already turned into a claim links to that claim instead of making another.
+  const tripItemIds = new Set(trip.items.map((i) => i.id));
+  const existingClaim = (data.claims || []).find((c) => c.items.some((i) => tripItemIds.has(i.sourceItemId)));
+
+  const handleClaim = () => {
+    if (existingClaim) {
+      router.push(`/claims/${existingClaim.id}`);
+      return;
+    }
+    const id = createClaimFromTrip(trip.id);
+    if (id) router.push(`/claims/${id}`);
+  };
+
   const handleDownload = async () => {
     const { downloadTripPdf } = await import("@/lib/pdf");
     downloadTripPdf(trip, categories);
@@ -132,6 +146,18 @@ export default function TripPage({ params }) {
         subtitle={`${formatDate(trip.createdAt)}${done ? " · done" : ""}`}
         right={
           <div className="flex items-center gap-1">
+            {trip.items.length > 0 && (
+              <button
+                onClick={handleClaim}
+                aria-label={existingClaim ? "Open claim" : "Make claim"}
+                className="press mr-1 flex h-9 items-center gap-1.5 rounded-full border border-mist bg-surface px-3 text-[13px] font-semibold text-ink hover:border-inkSoft/50"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="hidden min-[420px]:inline">{existingClaim ? "Claim" : "Make claim"}</span>
+              </button>
+            )}
             <button
               onClick={handleDownload}
               aria-label="Download PDF"
@@ -174,7 +200,7 @@ export default function TripPage({ params }) {
         }
       />
 
-      <main className={`mx-auto max-w-xl px-4 pt-5 ${done ? "pb-32" : "pb-56"}`}>
+      <main className={`page-in mx-auto max-w-2xl px-4 pt-5 md:px-6 ${done ? "pb-32" : "pb-56"}`}>
         {renaming && (
           <div className="mb-4 flex gap-2">
             <input
@@ -193,7 +219,7 @@ export default function TripPage({ params }) {
           </div>
         )}
 
-        <div className="torn-top torn-bottom rounded-card border border-mist bg-surface/70 py-1.5 shadow-paper">
+        <div className="overflow-hidden rounded-card border border-mist bg-surface">
           {trip.items.length === 0 ? (
             <div className="px-6 py-10 text-center">
               <p className="font-display text-lg font-bold text-ink">This basket is empty</p>
@@ -246,7 +272,7 @@ export default function TripPage({ params }) {
       </main>
 
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-mist bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
-        <div className="mx-auto max-w-xl">
+        <div className="mx-auto max-w-2xl md:px-2">
           <Tally inCart={inCart} planned={planned} groups={groups} />
           {done ? (
             <div className="h-3" />

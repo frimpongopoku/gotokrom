@@ -24,8 +24,8 @@ export default function TripItemRow({ item, isNew = false, onToggle, onOpen }) {
         }`}
       >
         {item.checked && (
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="check-draw">
-            <path d="M5 13l4 4L19 7" stroke="#FAF6EC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="check-draw text-paper">
+            <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         )}
       </button>

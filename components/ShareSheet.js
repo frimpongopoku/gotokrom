@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Sheet from "./Sheet";
 
 export default function ShareSheet({ open, onClose, autoMessage }) {
   const [copied, setCopied] = useState(false);
@@ -13,8 +14,6 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
       setUrl(`${window.location.origin}/?list=${blobId}`);
     }
   }, [open]);
-
-  if (!open) return null;
 
   const copy = async () => {
     try {
@@ -39,13 +38,9 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-scrim/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
-      <div
-        className="torn-top w-full max-w-md rounded-t-2xl bg-paper px-5 pb-7 pt-6 shadow-lift sm:rounded-card"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-1 text-2xl">🧺</div>
-        <h2 className="font-display text-xl font-bold text-ink">
+    <Sheet open={open} onClose={onClose} label="Share this list">
+      <div className="px-5 pb-6 pt-4">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
           {autoMessage ? "Your list is ready" : "Share this list"}
         </h2>
         <p className="mt-1 text-sm leading-relaxed text-inkSoft">
@@ -54,31 +49,22 @@ export default function ShareSheet({ open, onClose, autoMessage }) {
             : "Anyone with this link can view and edit the list — no account needed."}
         </p>
 
-        <div className="mt-4 flex items-center gap-2 rounded-card border border-mist bg-paperDim px-3 py-2.5">
+        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-mist bg-surface py-2 pl-4 pr-2">
           <span className="min-w-0 flex-1 truncate font-mono text-xs text-inkSoft">{url || "…"}</span>
-          <button
-            onClick={copy}
-            className="shrink-0 rounded-lg bg-pine px-3 py-1.5 text-xs font-bold text-paper transition active:scale-95"
-          >
+          <button onClick={copy} className="press shrink-0 rounded-xl border border-mist bg-paperDim px-3 py-2 text-xs font-bold text-ink">
             {copied ? "Copied!" : "Copy"}
           </button>
         </div>
 
         <div className="mt-3 flex gap-2">
-          <button
-            onClick={share}
-            className="flex-1 rounded-card bg-ink py-3 text-sm font-bold text-paper transition active:scale-[0.98]"
-          >
+          <button onClick={share} className="press flex-1 rounded-2xl bg-pine py-3.5 text-[15px] font-bold text-paper">
             Share link
           </button>
-          <button
-            onClick={onClose}
-            className="rounded-card border border-mist px-5 py-3 text-sm font-bold text-ink transition active:scale-[0.98]"
-          >
+          <button onClick={onClose} className="press rounded-2xl border border-mist px-5 py-3.5 text-[15px] font-bold text-ink">
             Done
           </button>
         </div>
       </div>
-    </div>
+    </Sheet>
   );
 }

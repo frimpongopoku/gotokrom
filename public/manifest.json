@@ -4,8 +4,8 @@
   "description": "A shared shopping list for two.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#171B15",
-  "theme_color": "#2F6E52",
+  "background_color": "#111214",
+  "theme_color": "#111214",
   "icons": [
     {
       "src": "/icon.svg",

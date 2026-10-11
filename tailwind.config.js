@@ -27,11 +27,11 @@ module.exports = {
         mono: ["var(--font-mono)"],
       },
       boxShadow: {
-        paper: "0 1px 2px rgba(31,42,36,0.06), 0 6px 16px -8px rgba(31,42,36,0.18)",
-        lift: "0 2px 4px rgba(31,42,36,0.08), 0 12px 24px -10px rgba(31,42,36,0.22)",
+        paper: "0 1px 2px rgba(0,0,0,0.10), 0 6px 16px -8px rgba(0,0,0,0.25)",
+        lift: "0 2px 4px rgba(0,0,0,0.12), 0 16px 32px -12px rgba(0,0,0,0.40)",
       },
       borderRadius: {
-        card: "10px",
+        card: "16px",
       },
     },
   },

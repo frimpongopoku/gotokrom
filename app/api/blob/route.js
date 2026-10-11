@@ -9,7 +9,7 @@ export async function POST() {
   }
 
   const id = randomUUID();
-  const initial = { updatedAt: Date.now(), itemBank: [], trips: [], categories: [] };
+  const initial = { updatedAt: Date.now(), itemBank: [], trips: [], categories: [], claims: [] };
 
   let res;
   try {

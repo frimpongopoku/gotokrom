@@ -2,31 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Night mode is the default palette; .light overrides it. */
+/* Night mode is the default palette; .light overrides it.
+   "pine" is the primary action color (lime at night, ink by day) and
+   "pine-dark" is the matching accent for text such as money in the cart. */
 :root {
-  --color-paper: 23 27 21;
-  --color-paper-dim: 30 35 27;
-  --color-surface: 34 40 31;
-  --color-ink: 240 236 224;
-  --color-ink-soft: 163 170 151;
-  --color-mist: 51 59 47;
-  --color-pine: 30 70 54;
-  --color-pine-dark: 143 212 174;
-  --color-yolk-dark: 245 203 116;
+  --color-paper: 17 18 20;
+  --color-paper-dim: 25 27 30;
+  --color-surface: 30 32 36;
+  --color-ink: 242 240 235;
+  --color-ink-soft: 158 163 170;
+  --color-mist: 50 53 59;
+  --color-pine: 212 240 106;
+  --color-pine-dark: 212 240 106;
+  --color-yolk-dark: 255 201 110;
   --color-scrim: 0 0 0;
+  color-scheme: dark;
 }
 
 :root.light {
-  --color-paper: 250 246 236;
-  --color-paper-dim: 241 235 219;
+  --color-paper: 242 240 235;
+  --color-paper-dim: 234 231 224;
   --color-surface: 255 255 255;
-  --color-ink: 31 42 36;
-  --color-ink-soft: 75 86 78;
-  --color-mist: 216 210 194;
-  --color-pine: 47 110 82;
-  --color-pine-dark: 32 76 58;
-  --color-yolk-dark: 201 138 30;
-  --color-scrim: 31 42 36;
+  --color-ink: 22 24 27;
+  --color-ink-soft: 78 83 90;
+  --color-mist: 222 218 210;
+  --color-pine: 22 24 27;
+  --color-pine-dark: 29 92 70;
+  --color-yolk-dark: 150 90 10;
+  --color-scrim: 22 24 27;
+  color-scheme: light;
 }
 
 * {
@@ -40,43 +44,87 @@ body {
 }
 
 ::selection {
-  background: #e8a93b55;
+  background: #d4f06a55;
 }
 
 :focus-visible {
-  outline: 2px solid #2f6e52;
+  outline: 2px solid rgb(var(--color-pine-dark));
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* ---------- Torn paper edges (signature card motif) ---------- */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+}
+
+/* The old torn-paper edges are retired in the ledger redesign; the classes stay harmless. */
 .torn-top,
 .torn-bottom {
   position: relative;
 }
 
-.torn-top::before,
-.torn-bottom::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 11px;
-  background-image: linear-gradient(-45deg, rgb(var(--color-paper)) 7px, transparent 0),
-    linear-gradient(45deg, rgb(var(--color-paper)) 7px, transparent 0);
-  background-size: 14px 14px;
-  background-repeat: repeat-x;
+/* ---------- Page and list entrances ---------- */
+.page-in {
+  animation: page-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.torn-top::before {
-  top: -1px;
-  background-position: left top;
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
-.torn-bottom::after {
-  bottom: -1px;
-  background-position: left bottom;
-  transform: scaleY(-1);
+/* Children fade up one after another; set --i on each child for its slot. */
+.stagger > * {
+  animation: page-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(min(var(--i, 0), 12) * 40ms);
+}
+
+.press {
+  transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 160ms, border-color 160ms, box-shadow 200ms;
+}
+
+.press:active {
+  transform: scale(0.97);
+}
+
+/* ---------- PAID stamp thumps down ---------- */
+.stamp-in {
+  animation: stamp-in 520ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-12deg) scale(2.2);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-12deg) scale(1);
+  }
+}
+
+/* ---------- Bulk-action bar and toasts rise from the bottom ---------- */
+.rise-in {
+  animation: rise-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* ---------- Soft lime highlighter behind key totals ---------- */
+.highlight {
+  background: linear-gradient(transparent 8%, rgb(var(--color-pine-dark) / 0.18) 8%, rgb(var(--color-pine-dark) / 0.18) 92%, transparent 92%);
+  border-radius: 6px;
+  padding: 0 0.2em;
 }
 
 /* ---------- Hand-drawn strikethrough for checked items ---------- */
@@ -280,4 +328,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* A row arriving in a list slides in without the "just added" glow. */
+.row-enter {
+  animation: row-in 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }

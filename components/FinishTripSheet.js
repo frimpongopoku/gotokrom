@@ -25,7 +25,7 @@ export default function FinishTripSheet({ open, trip, inCart, planned, onConfirm
         role="dialog"
         aria-modal="true"
         aria-labelledby="finish-trip-title"
-        className="sheet-in torn-top w-full max-w-md rounded-t-2xl bg-paper px-5 pb-6 pt-3 shadow-lift sm:rounded-card sm:pt-6"
+        className="sheet-in torn-top w-full max-w-md rounded-t-3xl border border-mist/70 bg-paper px-5 pb-6 pt-3 shadow-lift sm:rounded-3xl sm:pt-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-mist sm:hidden" />
