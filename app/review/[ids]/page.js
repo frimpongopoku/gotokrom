@@ -161,7 +161,16 @@ export default function ReviewPage({ params }) {
 
   return (
     <>
-      <Header />
+      <Header
+        right={
+          <Link
+            href="/"
+            className="press ml-1 flex h-10 items-center rounded-full border border-mist bg-surface px-4 text-[13px] font-semibold text-ink hover:border-inkSoft/50"
+          >
+            Open list
+          </Link>
+        }
+      />
 
       <main className="page-in mx-auto max-w-2xl px-4 pb-40 pt-6 md:px-6 md:pt-10">
         <p className="px-1 text-[13px] text-inkSoft">

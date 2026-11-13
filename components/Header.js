@@ -1,14 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { NavTabs } from "./AppNav";
 
 export function Wordmark() {
   return (
-    <div className="flex min-w-0 items-center gap-1.5">
+    <Link href="/" aria-label="Pokah home" className="flex min-w-0 items-center gap-1.5">
       <span className="truncate font-display text-[22px] font-extrabold tracking-[-0.04em] text-ink">pokah</span>
       <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-pine" />
-    </div>
+    </Link>
   );
 }
 
