@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 
-// Mid-tone hues that stay readable on both the night and light palettes.
+// Categorical hues validated as a set on the dark surface (lightness band,
+// chroma floor, colour-blind separation between neighbours, 3:1 contrast).
 // Categories take the next color in order, so neighbours rarely clash.
-const CATEGORY_COLORS = ["#E8A93B", "#4FA37A", "#5B8DD9", "#D9739B", "#3FA6A6", "#A66BC9", "#C4573B", "#8E9A3B"];
+export const CATEGORY_COLORS = ["#3987E5", "#D95926", "#199E70", "#C98500", "#D55181", "#008300", "#9085E9", "#E66767"];
 
 export function categoryColor(category) {
   if (!category) return "rgb(var(--color-ink-soft))";

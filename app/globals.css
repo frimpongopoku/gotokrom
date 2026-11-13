@@ -334,3 +334,48 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .row-enter {
   animation: row-in 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ---------- Charts ---------- */
+/* Lines draw themselves in; pair with pathLength="1" on the path. */
+.draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-line 1100ms 150ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fade-late {
+  animation: fade-in 600ms 500ms ease-out both;
+}
+
+/* Bars grow up from the baseline. */
+.grow-up {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: grow-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes grow-up {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* Horizontal bars and segments grow from the left. */
+.grow-x {
+  transform-origin: left;
+  animation: grow-x 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}

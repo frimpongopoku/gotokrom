@@ -17,6 +17,12 @@ const TABS = [
     match: (p) => p.startsWith("/claims"),
     icon: "M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6M9 16h3",
   },
+  {
+    href: "/insights",
+    label: "Insights",
+    match: (p) => p.startsWith("/insights"),
+    icon: "M4 20V10M10 20V4M16 20v-7M21 20H3",
+  },
 ];
 
 function useUnpaidCount() {
@@ -31,11 +37,11 @@ export function NavTabs() {
   const activeIndex = Math.max(0, TABS.findIndex((t) => t.match(pathname)));
 
   return (
-    <nav aria-label="Main" className="relative grid grid-cols-2 rounded-full border border-mist bg-paperDim p-1">
+    <nav aria-label="Main" className="relative grid grid-cols-3 rounded-full border border-mist bg-paperDim p-1">
       <span
         aria-hidden="true"
         className="absolute bottom-1 top-1 rounded-full bg-surface shadow-paper transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
-        style={{ left: 4, width: "calc(50% - 4px)", transform: `translateX(${activeIndex * 100}%)` }}
+        style={{ left: 4, width: `calc((100% - 8px) / ${TABS.length})`, transform: `translateX(${activeIndex * 100}%)` }}
       />
       {TABS.map((tab, i) => (
         <Link
@@ -66,7 +72,7 @@ export default function AppNav() {
       aria-label="Main"
       className="fixed inset-x-0 bottom-0 z-30 border-t border-mist/70 bg-paper/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
     >
-      <div className="mx-auto grid max-w-md grid-cols-2">
+      <div className="mx-auto grid max-w-md grid-cols-3">
         {TABS.map((tab) => {
           const active = tab.match(pathname);
           return (
